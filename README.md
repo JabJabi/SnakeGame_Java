@@ -26,11 +26,22 @@ Contritutors:
 ## TO DO
 
 - [x] Basics of the Games working, without any bugs
+      
 - [ ] Add sound and musics
+      
 - [ ] Add a Local Multiplayer
+      
 - [ ] Add Tutorial to explain what every obstacles do to the player
+      
 - [ ] Scoreboard fully working
+      
 - [ ] Add differents maps
+      
 - [ ] More Difficulties
 
+## More Informations
+
+This project is free to use, and everyone is free to contribute ! 
+
+Thanks for reading and good game !
 
