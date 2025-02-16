@@ -14,9 +14,13 @@ Contritutors:
 ## Progress
 
 > Basics of the Game ![100%](https://progress-bar.xyz/100)
+
 > Multiplayer ![0%](https://progress-bar.xyz/0)
+
 > Settings & Customizable ![41%](https://progress-bar.xyz/41)
+
 > Wiki & Tutorial ![0%](https://progress-bar.xyz/0)
+
 > Song ![0%](https://progress-bar.xyz/0)
 
 ## TO DO
