@@ -13,10 +13,7 @@ public class Position {
 	}
 		
 	public boolean equals(Position other) {
-		if(this.Line == other.Line && this.Column == other.Column) {
-			return true;
-		} else {
-			return false;
-		}
+		if(this.Line == other.Line && this.Column == other.Column) return true;
+		return false;
 	}
 }

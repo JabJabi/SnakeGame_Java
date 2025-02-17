@@ -15,7 +15,7 @@ public class MainMenuPanel extends JPanel {
 	this.setLayout(null); 
 	repaint();
 	}
-	int width = -400;
+	int width = -280;
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.black);
@@ -24,7 +24,7 @@ public class MainMenuPanel extends JPanel {
 		g.setFont(new Font("", Font.PLAIN, 100));
 		g.drawString("SnakeGame ", (getWidth()/4)-30, getHeight()/2);
 		g.setFont(new Font("", Font.PLAIN, 20));
-		g.drawString("Par Jaber Benyacoub (continuité ProjetTP5)",width, (getHeight()/2)+50);
+		g.drawString("Par Jab (continuité ProjetTP5)",width, (getHeight()/2)+50);
 		play(g);
 		Difficulty(g);
 		g.setColor(Color.green);
@@ -41,7 +41,7 @@ public class MainMenuPanel extends JPanel {
 				
 			}
 			
-		},600);
+		},1000);
 		
 	}
 	
@@ -51,9 +51,9 @@ public class MainMenuPanel extends JPanel {
 	
 	void movetxt() {
 		if(width >= getWidth()) {
-			width = -400;
+			width = -280;
 		}else {
-			width+=10;
+			width+=100;
 		}
 	}
 	
@@ -71,7 +71,8 @@ public class MainMenuPanel extends JPanel {
 		g.setColor(Color.black);
 		g.setFont(new Font("", Font.PLAIN, 20));
 		g.drawString("Difficulté",(getWidth()/4)+215, (getHeight()/2)+225);
-		
 	}
+	
+	
 
 }

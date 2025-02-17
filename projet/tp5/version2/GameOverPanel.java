@@ -18,14 +18,14 @@ public class GameOverPanel extends JPanel{
 					MainSnakeGame.frame.setContentPane(MainSnakeGame.MainMenupanel);
 					MainSnakeGame.frame.revalidate();
 					MainSnakeGame.frame.repaint();
-					MainSnakeGame.game.snakeGame.gameover= false;
-					
-			}
+
+				}
 			}
 		});
-		
-	repaint();
+
+		repaint();
 	}
+	
 	protected void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);

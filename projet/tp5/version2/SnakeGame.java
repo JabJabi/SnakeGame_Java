@@ -8,14 +8,14 @@ public class SnakeGame {
 	int nbColumns;
 	ArrayList<Position> snake;
 	Position direction;
+	Obstacle apple1;
+	Obstacle apple2;
+	Obstacle apple3;
+	Obstacle apple4;
+	Obstacle water;
+	Obstacle hunter;
+//	Position reverse; à ajouter plus tard
 	boolean gameover;
-	Apple apple1;
-	Apple apple2;
-	Apple apple3;
-	Apple apple4;
-	Position water;
-	Position reverse;
-	Position hunter;
 	
 	public SnakeGame() {
 		this.nbLines = 20;
@@ -28,9 +28,11 @@ public class SnakeGame {
 		this.apple2 = new Apple(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
 		this.apple3 = new Apple(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
 		this.apple4 = new Apple(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
-		this.water = new Position((int)(Math.random()*20),(int)(Math.random()*30));
+		this.water = new Water(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
+		this.hunter = new Hunter(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
 		this.direction = new Position(1,0);
-		gameover = false;
+		this.gameover = false;
+
 	}
 	
 	//Mouvements
@@ -44,7 +46,7 @@ public class SnakeGame {
 	}
 	
 	void moveForward() {
-		if(gameover == true) return;
+		if(isGameOver()) return;
 		Position newhead = new Position(snake.get(0).Line + direction.Line, snake.get(0).Column + direction.Column);
 		snake.add(0, newhead);
 		int taille = (int)snake.size();
@@ -66,22 +68,16 @@ public class SnakeGame {
 
 	boolean isGameOver() {
 		for(int i=2;i<snake.size(); i++) {
-			if(getSnakeHead().Line == snake.get(i).Line && snake.get(i).Column == getSnakeNeck().Column) {
-				gameover = true;
-				return true;
-			}
+			if(getSnakeHead().equals(snake.get(i))) return true;
 		}
-		if(getSnakeHead().Line >= nbLines || getSnakeHead().Column >= nbColumns || getSnakeHead().Line < 0 || getSnakeHead().Column < 0) {
-			gameover = true;
+		if(getSnakeHead().Line >= nbLines || getSnakeHead().Column >= nbColumns || getSnakeHead().Line < 0 || getSnakeHead().Column < 0) 
+			return true;
+		if(gameover) {
 			return true;
 		}
-		else {
-			gameover = false;
-			return false;
-		}
-	
+		return false;
 	}
-	
+
 	boolean isSnakeHead(Position pos) {
 		if(pos.equals(getSnakeHead())) return true;
 		return false;
@@ -94,7 +90,7 @@ public class SnakeGame {
 	}
 	
 	boolean isWaterCell(Position pos) {
-		if(this.water.equals(pos)) return true;
+		if(this.water.Get().equals(pos)) return true;
 		return false;
 		
 	}

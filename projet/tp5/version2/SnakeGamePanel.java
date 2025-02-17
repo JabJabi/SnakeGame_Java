@@ -17,6 +17,7 @@ public class SnakeGamePanel extends JPanel{
 	SnakeGame snakeGame = new SnakeGame();
 	int started = 0;
 	int time = MainSnakeGame.a;
+	int ope = 1;
 	SnakeGamePanel() {
 		setFocusable(true);
 		addKeyListener(new KeyAdapter() {
@@ -32,11 +33,7 @@ public class SnakeGamePanel extends JPanel{
 					
 				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					snakeGame.setDirection(new Position(0,1));
-				}	if (e.getKeyCode() == KeyEvent.VK_B) {
-					if(started ==2 && MainSnakeGame.getpanel() == MainSnakeGame.game) {
-						started = 2;
-					}
-			}
+				}	
 			}
 		});
 		
@@ -51,9 +48,19 @@ public class SnakeGamePanel extends JPanel{
 					repaint();	
 			}
 		}, 10,time);
-	}
+		
+		new Timer().scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if(snakeGame.hunter.Get().Line >= snakeGame.nbLines || snakeGame.hunter.Get().Column >= snakeGame.nbColumns) {
+					ope=-ope;
+				} 
+				snakeGame.hunter.Get().Line +=ope;
+				snakeGame.hunter.Get().Column +=ope;	
+			}
+		}, 10,time*15);
 	
-	
+}
 	static int score = 0;
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -66,9 +73,12 @@ public class SnakeGamePanel extends JPanel{
 				g.setColor(Color.black);
 				g.drawString("Score: " + score, 920, 200);
 				g.drawString("Niveau: ", 920, 230);
-				g.drawString(""+ time, 920, 242);
-				g.setFont(new Font("", Font.PLAIN, 18));
-				g.drawString("Pseudo: ", 910, 100);
+				if(time == 500) g.drawString("Facile", 920, 242);
+				if(time == 250)	g.drawString("Normal", 920, 242);
+				if(time == 100) g.drawString("Difficile", 920, 242);
+				g.setFont(new Font("", Font.PLAIN, 10));
+			//	g.setFont(new Font("", Font.PLAIN, 18));
+			//	g.drawString("Pseudo: ", 910, 100);
 			}
 		}
 
@@ -76,91 +86,55 @@ public class SnakeGamePanel extends JPanel{
 	
 	
 	void drawCell(Graphics g, int line, int column) {
-		// Début de la méthode drawCell
 		Position pos = new Position(line, column);
 		if(snakeGame.isBlackCell(pos)) {
 			g.setColor(Color.black);
 		} else {
 			g.setColor(Color.gray);
 		}
-	if(snakeGame.isGameOver()) score =0;
-	 if(snakeGame.isSnakeCell(pos)) {
-		g.setColor(Color.green);
-	} 
-	 if(snakeGame.isWaterCell(pos)) {
-		 g.setColor(Color.blue);
-	 }
 
-	 snakeGame.apple1.AppleCell(pos,g);
-	 snakeGame.apple2.AppleCell(pos,g);
-	 snakeGame.apple3.AppleCell(pos,g);
-	 snakeGame.apple4.AppleCell(pos,g);
-	if(snakeGame.apple1.isAppleCell(snakeGame.snake.get(0))) {
-		snakeGame.apple1.apple.Line = (int)(Math.random()*20);
-		snakeGame.apple1.apple.Column = (int)(Math.random()*30);
-		score++;
-		Position newsnake = new Position(snakeGame.snake.get(snakeGame.snake.size()-1).Line, snakeGame.snake.get(snakeGame.snake.size()-1).Column);
-		snakeGame.snake.add(snakeGame.snake.size()-1, newsnake);
-	}
-	if(snakeGame.isWaterCell(snakeGame.apple1.apple)) {
-		snakeGame.water.Line = (int)(Math.random()*20);
-		snakeGame.water.Column = (int)(Math.random()*30);
-	}
-	
+		if(snakeGame.isGameOver()) score =0;
+		if(snakeGame.isSnakeCell(pos)) {
+			g.setColor(Color.green);
+		} 
 
-	if(snakeGame.apple2.isAppleCell(snakeGame.snake.get(0))) {
-		snakeGame.apple2.apple.Line = (int)(Math.random()*20);
-		snakeGame.apple2.apple.Column = (int)(Math.random()*30);
-		score++;
-		Position newsnake = new Position(snakeGame.snake.get(snakeGame.snake.size()-1).Line, snakeGame.snake.get(snakeGame.snake.size()-1).Column);
-		snakeGame.snake.add(snakeGame.snake.size()-1, newsnake);
-	}
-	if(snakeGame.isWaterCell(snakeGame.apple2.apple)) {
-		snakeGame.water.Line = (int)(Math.random()*20);
-		snakeGame.water.Column = (int)(Math.random()*30);
-	}
-	
-	if(snakeGame.apple3.isAppleCell(snakeGame.snake.get(0))) {
-		snakeGame.apple3.apple.Line = (int)(Math.random()*20);
-		snakeGame.apple3.apple.Column = (int)(Math.random()*30);
-		score++;
-		Position newsnake = new Position(snakeGame.snake.get(snakeGame.snake.size()-1).Line, snakeGame.snake.get(snakeGame.snake.size()-1).Column);
-		snakeGame.snake.add(snakeGame.snake.size()-1, newsnake);
-	}
-	if(snakeGame.isWaterCell(snakeGame.apple3.apple)) {
-		snakeGame.water.Line = (int)(Math.random()*20);
-		snakeGame.water.Column = (int)(Math.random()*30);
-	}
-	
-	if(snakeGame.apple4.isAppleCell(snakeGame.snake.get(0))) {
-		snakeGame.apple4.apple.Line = (int)(Math.random()*20);
-		snakeGame.apple4.apple.Column = (int)(Math.random()*30);
-		score++;
-		Position newsnake = new Position(snakeGame.snake.get(snakeGame.snake.size()-1).Line, snakeGame.snake.get(snakeGame.snake.size()-1).Column);
-		snakeGame.snake.add(snakeGame.snake.size()-1, newsnake);
-	}
-	if(snakeGame.isWaterCell(snakeGame.apple4.apple)) {
-		snakeGame.water.Line = (int)(Math.random()*20);
-		snakeGame.water.Column = (int)(Math.random()*30);
-	}
-	if(snakeGame.isWaterCell(snakeGame.snake.get(0))) {
-		snakeGame.water.Line = (int)(Math.random()*20);
-		snakeGame.water.Column = (int)(Math.random()*30);
-		score--;
-	}
+		snakeGame.water.Cell(pos, g, Color.blue);
+		snakeGame.hunter.Cell(pos, g, Color.orange);
+		snakeGame.apple1.Cell(pos,g,Color.red);
+		snakeGame.apple2.Cell(pos,g, Color.red);
+		snakeGame.apple3.Cell(pos,g, Color.red);
+		snakeGame.apple4.Cell(pos,g, Color.red);
 		g.fillRect(this.getCellX(pos)*30, this.getCellY(pos)*30, this.getCellWidth(), this.getCellHeight());
-		// Fin de la méthode drawCell
 		g.setColor(Color.white);
 		g.fillRect(snakeGame.nbLines*20, snakeGame.nbColumns*30, 1000, 660);
+
+		if(snakeGame.hunter.isCell(snakeGame.getSnakeHead())) {
+			snakeGame.gameover = true;
+		}
+
+		snakeGame.apple1.Touched(snakeGame.getSnakeHead());
+		snakeGame.apple2.Touched(snakeGame.getSnakeHead());
+		snakeGame.apple3.Touched(snakeGame.getSnakeHead());
+		snakeGame.apple4.Touched(snakeGame.getSnakeHead());
+		snakeGame.apple1.SnakeBodyTeleport();
+		snakeGame.apple2.SnakeBodyTeleport();
+		snakeGame.apple3.SnakeBodyTeleport();
+		snakeGame.apple4.SnakeBodyTeleport();
+		snakeGame.water.Touched(snakeGame.apple1.Get());
+		snakeGame.water.Touched(snakeGame.apple2.Get());
+		snakeGame.water.Touched(snakeGame.apple3.Get());
+		snakeGame.water.Touched(snakeGame.apple4.Get());
+		snakeGame.water.Touched(snakeGame.hunter.Get());
+		snakeGame.water.Touched(snakeGame.getSnakeHead());
+		snakeGame.hunter.Touched(snakeGame.apple1.Get());
+		snakeGame.hunter.Touched(snakeGame.apple2.Get());
+		snakeGame.hunter.Touched(snakeGame.apple3.Get());
+		snakeGame.hunter.Touched(snakeGame.apple4.Get());
+		snakeGame.hunter.Touched(snakeGame.getSnakeHead());
+		
+		
 	}
-	
-	void Reset() {
-		snakeGame = new SnakeGame();
-	}
-	int getBorderSize() {
-		return snakeGame.nbLines + snakeGame.nbColumns;
-	}
-	
+	//methodes
 	int getCellWidth() {
 		return snakeGame.nbColumns * 30;
 	}
