@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintStream;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JButton;
@@ -11,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 public class MainSnakeGame {
-	static int a = 250;
+	static int a = 150;
 	static SnakeGamePanel game;
 	static GameOverPanel gameover = new GameOverPanel();
 	static JFrame frame = new JFrame("Mon magnifique Serpent");
@@ -35,9 +36,13 @@ public class MainSnakeGame {
 		frame.setVisible(true);
 		frame.setResizable(false);
 		game = new SnakeGamePanel();
+		Apple apple = new Apple(new Position(1,1));
+		System.out.println(apple.getClass());
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
+				
+					game.snakeGame.isGameOver();
 					btn.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e) {
 							game = new SnakeGamePanel();
@@ -88,8 +93,6 @@ public class MainSnakeGame {
 					        btn2.setBounds((diff.getWidth()/4)+130, diff.getHeight()/2, 250, 50);
 					        btn3.setBounds((diff.getWidth()/4)+130, diff.getHeight()/2+100, 250, 50);
 					        btn4.setBounds(50, 50, 100, 25);
-					        
-					        
 
 						}
 					});
@@ -103,11 +106,11 @@ public class MainSnakeGame {
         JButton source = (JButton) e.getSource();
 
         if (source.getText().equals(" ")) {
-        	a = 500;
+        	a = 300;
         } else if (source.getText().equals("  ")) {
-        	a = 250;
+        	a = 150;
         } else if (source.getText().equals("   ")) {
-        	a= 100;
+        	a= 75;
         } else if(source.getText().equals("    ")) {
         	frame.setContentPane(MainMenupanel);
         }

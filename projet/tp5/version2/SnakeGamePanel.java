@@ -1,4 +1,3 @@
-
 package projet.tp5.version2;
 
 import java.awt.Color;
@@ -17,6 +16,7 @@ public class SnakeGamePanel extends JPanel{
 	SnakeGame snakeGame = new SnakeGame();
 	int started = 0;
 	int time = MainSnakeGame.a;
+	int timer = time;
 	int ope = 1;
 	SnakeGamePanel() {
 		setFocusable(true);
@@ -41,27 +41,27 @@ public class SnakeGamePanel extends JPanel{
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-					snakeGame.isGameOver();
 					if(started == 2) {
 						snakeGame.moveForward();
 					} 
+					timer+=time;
 					repaint();	
 			}
-		}, 10,time);
+		}, 1000,time);
 		
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				if(snakeGame.hunter.Get().Line >= snakeGame.nbLines || snakeGame.hunter.Get().Column >= snakeGame.nbColumns) {
+				if(snakeGame.hunter.Get().Line >= snakeGame.nbLines || snakeGame.hunter.Get().Column >= snakeGame.nbColumns || snakeGame.hunter.Get().Line < 0|| snakeGame.hunter.Get().Column < 0) {
 					ope=-ope;
 				} 
 				snakeGame.hunter.Get().Line +=ope;
 				snakeGame.hunter.Get().Column +=ope;	
 			}
-		}, 10,time*15);
+		}, 1000,time*15);
 	
 }
-	static int score = 0;
+	int score = 0;
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for (int line = 0; line <= snakeGame.nbLines; line++) {
@@ -76,6 +76,9 @@ public class SnakeGamePanel extends JPanel{
 				if(time == 500) g.drawString("Facile", 920, 242);
 				if(time == 250)	g.drawString("Normal", 920, 242);
 				if(time == 100) g.drawString("Difficile", 920, 242);
+				 g.drawString("Timer:", 920, 267);
+				 int min = (timer/1000)/60;
+				 g.drawString(min + ":" + ((timer/1000)-min*60) + ":" + timer%1000, 920, 280);
 				g.setFont(new Font("", Font.PLAIN, 10));
 			//	g.setFont(new Font("", Font.PLAIN, 18));
 			//	g.drawString("Pseudo: ", 910, 100);
@@ -87,17 +90,18 @@ public class SnakeGamePanel extends JPanel{
 	
 	void drawCell(Graphics g, int line, int column) {
 		Position pos = new Position(line, column);
+		Color green_ground = new Color(50,168,92);
+		Color dgreen_ground = new Color(50,168,52);
 		if(snakeGame.isBlackCell(pos)) {
-			g.setColor(Color.black);
+			g.setColor(green_ground);
 		} else {
-			g.setColor(Color.gray);
+			g.setColor(dgreen_ground);
 		}
 
 		if(snakeGame.isGameOver()) score =0;
 		if(snakeGame.isSnakeCell(pos)) {
 			g.setColor(Color.green);
 		} 
-
 		snakeGame.water.Cell(pos, g, Color.blue);
 		snakeGame.hunter.Cell(pos, g, Color.orange);
 		snakeGame.apple1.Cell(pos,g,Color.red);
@@ -107,33 +111,14 @@ public class SnakeGamePanel extends JPanel{
 		g.fillRect(this.getCellX(pos)*30, this.getCellY(pos)*30, this.getCellWidth(), this.getCellHeight());
 		g.setColor(Color.white);
 		g.fillRect(snakeGame.nbLines*20, snakeGame.nbColumns*30, 1000, 660);
-
-		if(snakeGame.hunter.isCell(snakeGame.getSnakeHead())) {
-			snakeGame.gameover = true;
+		for(int i=0; i<snakeGame.obstacles.size();i++) {
+			snakeGame.obstacles.get(i).NoOver();
 		}
-
-		snakeGame.apple1.Touched(snakeGame.getSnakeHead());
-		snakeGame.apple2.Touched(snakeGame.getSnakeHead());
-		snakeGame.apple3.Touched(snakeGame.getSnakeHead());
-		snakeGame.apple4.Touched(snakeGame.getSnakeHead());
-		snakeGame.apple1.SnakeBodyTeleport();
-		snakeGame.apple2.SnakeBodyTeleport();
-		snakeGame.apple3.SnakeBodyTeleport();
-		snakeGame.apple4.SnakeBodyTeleport();
-		snakeGame.water.Touched(snakeGame.apple1.Get());
-		snakeGame.water.Touched(snakeGame.apple2.Get());
-		snakeGame.water.Touched(snakeGame.apple3.Get());
-		snakeGame.water.Touched(snakeGame.apple4.Get());
-		snakeGame.water.Touched(snakeGame.hunter.Get());
-		snakeGame.water.Touched(snakeGame.getSnakeHead());
-		snakeGame.hunter.Touched(snakeGame.apple1.Get());
-		snakeGame.hunter.Touched(snakeGame.apple2.Get());
-		snakeGame.hunter.Touched(snakeGame.apple3.Get());
-		snakeGame.hunter.Touched(snakeGame.apple4.Get());
-		snakeGame.hunter.Touched(snakeGame.getSnakeHead());
 		
 		
 	}
+	
+	
 	//methodes
 	int getCellWidth() {
 		return snakeGame.nbColumns * 30;

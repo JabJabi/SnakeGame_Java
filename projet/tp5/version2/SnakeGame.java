@@ -14,9 +14,9 @@ public class SnakeGame {
 	Obstacle apple4;
 	Obstacle water;
 	Obstacle hunter;
+	ArrayList<Obstacle> obstacles;
 //	Position reverse; à ajouter plus tard
-	boolean gameover;
-	
+
 	public SnakeGame() {
 		this.nbLines = 20;
 		this.nbColumns = 30;
@@ -31,8 +31,13 @@ public class SnakeGame {
 		this.water = new Water(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
 		this.hunter = new Hunter(new Position((int)(Math.random()*20),(int)(Math.random()*30)));
 		this.direction = new Position(1,0);
-		this.gameover = false;
-
+		this.obstacles = new ArrayList<Obstacle>();
+		this.obstacles.add(apple1);
+		this.obstacles.add(apple2);
+		this.obstacles.add(apple3);
+		this.obstacles.add(apple4);
+		this.obstacles.add(water);
+		this.obstacles.add(hunter);
 	}
 	
 	//Mouvements
@@ -70,11 +75,9 @@ public class SnakeGame {
 		for(int i=2;i<snake.size(); i++) {
 			if(getSnakeHead().equals(snake.get(i))) return true;
 		}
+		if(hunter.isCell(getSnakeHead())) return true;
 		if(getSnakeHead().Line >= nbLines || getSnakeHead().Column >= nbColumns || getSnakeHead().Line < 0 || getSnakeHead().Column < 0) 
 			return true;
-		if(gameover) {
-			return true;
-		}
 		return false;
 	}
 
