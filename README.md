@@ -29,15 +29,15 @@ Contritutors:
       
 - [ ] Add sound and musics
       
-- [ ] Add a Local Multiplayer
+- [ ] Add a Local Multiplayer 
       
 - [ ] Add Tutorial to explain what every obstacles do to the player
       
-- [ ] Scoreboard fully working
+- [X] Scoreboard fully working 
       
 - [ ] Add differents maps
       
-- [ ] More Difficulties
+- [X] More Difficulties (perhaps in the future i will edit the number of apples and obstacles depending of the difficulty)
 
 ## More Informations
 
