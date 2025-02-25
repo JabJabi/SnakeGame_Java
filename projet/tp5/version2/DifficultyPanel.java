@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
 
@@ -15,8 +13,8 @@ public class DifficultyPanel extends JPanel{
 	this.setLayout(new BorderLayout());
 	repaint();
 	}
+	
 	protected void paintComponent(Graphics g) {
-		
 		super.paintComponent(g);
 		g.setColor(Color.black);
 		g.fillRect(0, 0, 1000, 630);

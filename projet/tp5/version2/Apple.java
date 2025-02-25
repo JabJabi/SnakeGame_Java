@@ -1,6 +1,5 @@
 package projet.tp5.version2;
 
-
 public class Apple implements Obstacle{
 	Position apple;
 	

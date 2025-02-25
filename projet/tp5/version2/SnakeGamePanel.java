@@ -7,17 +7,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class SnakeGamePanel extends JPanel{
-	
-	SnakeGame snakeGame = new SnakeGame();
-	int started = 0;
-	int time = MainSnakeGame.a;
-	int timer = time;
 	int ope = 1;
+	SnakeGame snakeGame = new SnakeGame();
+	int time = MainSnakeGame.newtime;
+	int timer = time;
 	SnakeGamePanel() {
 		setFocusable(true);
 		addKeyListener(new KeyAdapter() {
@@ -41,25 +37,20 @@ public class SnakeGamePanel extends JPanel{
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-					if(started == 2) {
-						snakeGame.moveForward();
-					} 
-					timer+=time;
-					repaint();	
+				snakeGame.moveForward();
+				timer+=time;
+				repaint();	
 			}
 		}, 1000,time);
 		
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				if(snakeGame.hunter.Get().Line >= snakeGame.nbLines || snakeGame.hunter.Get().Column >= snakeGame.nbColumns || snakeGame.hunter.Get().Line < 0|| snakeGame.hunter.Get().Column < 0) {
-					ope=-ope;
-				} 
-				snakeGame.hunter.Get().Line +=ope;
-				snakeGame.hunter.Get().Column +=ope;	
+					Obstacle.Moove();
 			}
-		}, 1000,time*15);
-	
+		}, 1000,time*20);
+
+
 }
 	int score = 0;
 	protected void paintComponent(Graphics g) {
@@ -73,15 +64,17 @@ public class SnakeGamePanel extends JPanel{
 				g.setColor(Color.black);
 				g.drawString("Score: " + score, 920, 200);
 				g.drawString("Niveau: ", 920, 230);
-				if(time == 500) g.drawString("Facile", 920, 242);
-				if(time == 250)	g.drawString("Normal", 920, 242);
-				if(time == 100) g.drawString("Difficile", 920, 242);
-				 g.drawString("Timer:", 920, 267);
-				 int min = (timer/1000)/60;
-				 g.drawString(min + ":" + ((timer/1000)-min*60) + ":" + timer%1000, 920, 280);
+				if(time == 300) g.drawString("Facile", 920, 242);
+				if(time == 150)	g.drawString("Normal", 920, 242);
+				if(time == 75) g.drawString("Difficile", 920, 242);
+				g.drawString("Timer:", 920, 267);
+				int min = (timer/1000)/60;
+				g.drawString(min + ":" + ((timer/1000)-min*60) + ":" + timer%1000, 920, 280);
 				g.setFont(new Font("", Font.PLAIN, 10));
-			//	g.setFont(new Font("", Font.PLAIN, 18));
-			//	g.drawString("Pseudo: ", 910, 100);
+				g.drawString("Meilleur score: ", 920, 300);
+				g.drawString("" + MainSnakeGame.meilleur, 920, 320);
+				//	g.setFont(new Font("", Font.PLAIN, 18));
+				//	g.drawString("Pseudo: ", 910, 100);
 			}
 		}
 
@@ -89,6 +82,9 @@ public class SnakeGamePanel extends JPanel{
 	
 	
 	void drawCell(Graphics g, int line, int column) {
+		for(Obstacle obs : snakeGame.obstacles) {
+			obs.NoOver();
+		}
 		Position pos = new Position(line, column);
 		Color green_ground = new Color(50,168,92);
 		Color dgreen_ground = new Color(50,168,52);
@@ -98,24 +94,19 @@ public class SnakeGamePanel extends JPanel{
 			g.setColor(dgreen_ground);
 		}
 
-		if(snakeGame.isGameOver()) score =0;
 		if(snakeGame.isSnakeCell(pos)) {
 			g.setColor(Color.green);
 		} 
-		snakeGame.water.Cell(pos, g, Color.blue);
-		snakeGame.hunter.Cell(pos, g, Color.orange);
-		snakeGame.apple1.Cell(pos,g,Color.red);
-		snakeGame.apple2.Cell(pos,g, Color.red);
-		snakeGame.apple3.Cell(pos,g, Color.red);
-		snakeGame.apple4.Cell(pos,g, Color.red);
+		for(Obstacle obs : snakeGame.obstacles) {
+			Color color = green_ground;
+			if(obs.getClass().getName() == "projet.tp5.version2.Apple") color = Color.red;
+			if(obs.getClass().getName() == "projet.tp5.version2.Water") color = Color.blue;
+			if(obs.getClass().getName() == "projet.tp5.version2.Hunter") color = Color.orange;
+			obs.Cell(pos, g, color);
+		}
 		g.fillRect(this.getCellX(pos)*30, this.getCellY(pos)*30, this.getCellWidth(), this.getCellHeight());
 		g.setColor(Color.white);
 		g.fillRect(snakeGame.nbLines*20, snakeGame.nbColumns*30, 1000, 660);
-		for(int i=0; i<snakeGame.obstacles.size();i++) {
-			snakeGame.obstacles.get(i).NoOver();
-		}
-		
-		
 	}
 	
 	

@@ -1,6 +1,5 @@
 package projet.tp5.version2;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -44,11 +43,7 @@ public class MainMenuPanel extends JPanel {
 		},1000);
 		
 	}
-	
-	void background() {
-
-	}
-	
+		
 	void movetxt() {
 		if(width >= getWidth()) {
 			width = -280;
@@ -72,7 +67,6 @@ public class MainMenuPanel extends JPanel {
 		g.setFont(new Font("", Font.PLAIN, 20));
 		g.drawString("Difficulté",(getWidth()/4)+215, (getHeight()/2)+225);
 	}
-	
 	
 
 }

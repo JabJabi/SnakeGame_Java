@@ -12,7 +12,8 @@ public class Hunter implements Obstacle {
 	public Position Get() {
 		return hunter;
 	}
-
+	
+	//peut etre ajouter le code de mouvement & de gameover ici? à voir plus tard 
 	
 	
 }

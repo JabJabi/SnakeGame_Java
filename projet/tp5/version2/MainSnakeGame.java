@@ -4,7 +4,19 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JButton;
@@ -12,12 +24,20 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 public class MainSnakeGame {
-	static int a = 150;
+	static int newtime = 150;
 	static SnakeGamePanel game;
 	static GameOverPanel gameover = new GameOverPanel();
 	static JFrame frame = new JFrame("Mon magnifique Serpent");
 	static MainMenuPanel MainMenupanel = new MainMenuPanel();
-	public static void main(String[] args) {
+	static int meilleur;
+	static Path file = Paths.get("meilleur.txt");
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		if(Files.readAllLines(file).size() == 0) {
+			BufferedWriter mscore = new BufferedWriter(new FileWriter("meilleur.txt"));
+			mscore.write("0");
+			mscore.close();
+		}
+		meilleur = Integer.parseInt(Files.readAllLines(file).get(0));
 		JButton btn = new JButton();
 		JButton dtn = new JButton();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -36,8 +56,6 @@ public class MainSnakeGame {
 		frame.setVisible(true);
 		frame.setResizable(false);
 		game = new SnakeGamePanel();
-		Apple apple = new Apple(new Position(1,1));
-		System.out.println(apple.getClass());
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
@@ -50,10 +68,21 @@ public class MainSnakeGame {
 							frame.revalidate();
 							frame.repaint();
 					        game.requestFocusInWindow();
-					        game.started =2;
 						}
 					});
 					if(game.snakeGame.isGameOver()) {
+						try {
+							BufferedWriter mscore = new BufferedWriter(new FileWriter("meilleur.txt"));
+							Path file = Paths.get("meilleur.txt");
+							if(meilleur < game.score) {
+								mscore.write(String.valueOf(game.score));
+								mscore.close();
+							}
+							meilleur = Integer.parseInt(Files.readString(file));
+						} catch (NumberFormatException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						frame.setContentPane(gameover);
 						gameover.requestFocusInWindow();
 						frame.revalidate();
@@ -106,11 +135,11 @@ public class MainSnakeGame {
         JButton source = (JButton) e.getSource();
 
         if (source.getText().equals(" ")) {
-        	a = 300;
+        	newtime = 300;
         } else if (source.getText().equals("  ")) {
-        	a = 150;
+        	newtime = 150;
         } else if (source.getText().equals("   ")) {
-        	a= 75;
+        	newtime= 75;
         } else if(source.getText().equals("    ")) {
         	frame.setContentPane(MainMenupanel);
         }
